@@ -1,0 +1,30 @@
+name: Start Bots
+
+on:
+  workflow_dispatch:  # để bạn bấm "Run workflow" bằng tay
+
+jobs:
+  run-bots:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360   # tối đa 15 phút
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install deps
+        run: npm install
+
+      - name: Start Dream & Marlow for 10 minutes
+        env:
+          SERVER_HOST: node1.lumine.asia   # đổi thành IP / domain server bạn
+          SERVER_PORT: 25675                     # đổi theo port server
+          AUTH_MODE: offline                     # hoặc 'microsoft' nếu xài acc real
+        run: |
+          timeout 60000s npm start || true
+          
